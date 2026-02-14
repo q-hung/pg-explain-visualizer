@@ -1,0 +1,41 @@
+Finalize Aggregate  (cost=507866.38..507866.39 rows=1 width=8) (actual time=32451.372..33111.937 rows=1 loops=1)
+  Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+  ->  Gather  (cost=507866.16..507866.37 rows=2 width=8) (actual time=32391.086..33111.896 rows=3 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+        ->  Partial Aggregate  (cost=506866.16..506866.17 rows=1 width=8) (actual time=32382.889..32382.893 rows=1 loops=3)
+              Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+              ->  Subquery Scan on action_outcomes  (cost=1.18..506864.98 rows=237 width=32) (actual time=380.505..32149.749 rows=669452 loops=3)
+                    Filter: (action_outcomes.key = ANY ('{success}'::text[]))
+                    Rows Removed by Filter: 2008356
+                    Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                    ->  Result  (cost=1.18..506332.64 rows=4731900 width=64) (actual time=380.499..31739.487 rows=2677808 loops=3)
+                          Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                          ->  ProjectSet  (cost=1.18..435354.14 rows=4731900 width=32) (actual time=380.494..31270.405 rows=2677808 loops=3)
+                                Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                                ->  Subquery Scan on summaries  (cost=1.18..411339.75 rows=47319 width=32) (actual time=380.476..28956.119 rows=669452 loops=3)
+                                      Filter: (summaries.key <> 'changeCount'::text)
+                                      Rows Removed by Filter: 1564260
+                                      Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                                      ->  Result  (cost=1.18..410745.29 rows=1981500 width=64) (actual time=240.416..28643.145 rows=2233712 loops=3)
+                                            Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                                            ->  ProjectSet  (cost=1.18..381022.79 rows=1981500 width=32) (actual time=240.410..28191.004 rows=2233712 loops=3)
+                                                  Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                                                  ->  Nested Loop  (cost=1.18..370966.67 rows=19815 width=61) (actual time=240.381..24528.095 rows=1564341 loops=3)
+                                                        Buffers: shared hit=4328794 read=665351 dirtied=266 written=8651
+                                                        ->  Parallel Index Scan using "PK_118301136d26ae01a61aa084878" on trigger t  (cost=0.61..15814.48 rows=474 width=4) (actual time=218.725..378.433 rows=401 loops=3)
+                                                              Filter: (trigger_set_id = ANY ('{33743,33745}'::integer[]))
+                                                              Rows Removed by Filter: 94268
+                                                              Buffers: shared hit=276608 read=2484 dirtied=266 written=38
+                                                        ->  Index Scan using idx_trigger_run_trigger_id_start_time on trigger_run tr  (cost=0.57..739.13 rows=1014 width=65) (actual time=0.552..59.584 rows=3904 loops=1202)
+                                                              Index Cond: ((trigger_id = t.trigger_id) AND (start_time >= '2026-01-12 00:00:00'::timestamp without time zone) AND (start_time <= '2026-02-12 00:00:00'::timestamp without time zone))
+                                                              Buffers: shared hit=4052186 read=662867 written=8613
+Planning:
+  Buffers: shared hit=11 read=13 written=1
+Planning Time: 1.293 ms
+JIT:
+  Functions: 53
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 3.233 ms, Inlining 192.219 ms, Optimization 215.665 ms, Emission 143.760 ms, Total 554.877 ms
+Execution Time: 33131.996 ms

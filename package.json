@@ -1,0 +1,90 @@
+{
+  "name": "pg-explain-visualizer",
+  "displayName": "PG Explain Visualizer",
+  "description": "Visualize PostgreSQL EXPLAIN (ANALYZE) output with an interactive plan tree, timing bars, and statistics.",
+  "version": "0.1.0",
+  "publisher": "YOUR-PUBLISHER-ID",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR-USERNAME/pg-explain-visualizer"
+  },
+  "homepage": "https://github.com/YOUR-USERNAME/pg-explain-visualizer#readme",
+  "bugs": {
+    "url": "https://github.com/YOUR-USERNAME/pg-explain-visualizer/issues"
+  },
+  "keywords": [
+    "postgresql",
+    "postgres",
+    "explain",
+    "explain analyze",
+    "query plan",
+    "database",
+    "performance",
+    "sql"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:pgExplain.visualizeSelection",
+    "onCommand:pgExplain.visualizeFile",
+    "onLanguage:pgexplain"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "pgExplain.visualizeSelection",
+        "title": "PG Explain: Visualize Selection"
+      },
+      {
+        "command": "pgExplain.visualizeFile",
+        "title": "PG Explain: Visualize File"
+      }
+    ],
+    "languages": [
+      {
+        "id": "pgexplain",
+        "aliases": [
+          "PG Explain",
+          "pgexplain"
+        ],
+        "extensions": [
+          ".explain"
+        ]
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "pgExplain.visualizeSelection",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node esbuild.mjs",
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
