@@ -2,7 +2,7 @@
   "name": "pg-explain-visualizer",
   "displayName": "PG Explain Visualizer",
   "description": "Visualize PostgreSQL EXPLAIN (ANALYZE) output with an interactive plan tree, timing bars, and statistics.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "q-hung",
   "icon": "images/icon.png",
   "author": {
