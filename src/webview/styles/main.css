@@ -150,6 +150,31 @@ body {
   background: var(--vscode-button-hoverBackground, #0062a3);
 }
 
+.plan-filter-label {
+  margin-left: 12px;
+}
+
+.plan-filter-input {
+  width: 200px;
+  max-width: 100%;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--vscode-input-foreground);
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, transparent);
+  border-radius: 4px;
+}
+
+.plan-filter-input::placeholder {
+  color: var(--vscode-input-placeholderForeground);
+}
+
+.plan-filter-input:focus {
+  outline: none;
+  border-color: var(--vscode-focusBorder, #007acc);
+}
+
 /* ===== Plan Tree ===== */
 .plan-tree {
   border: 1px solid
@@ -216,6 +241,18 @@ body {
 
 .node-row--expandable {
   cursor: pointer;
+}
+
+.node-row--match {
+  background: var(--vscode-editor-findMatchHighlightBackground, rgba(255, 230, 100, 0.2));
+}
+
+.node-row--dimmed {
+  opacity: 0.4;
+}
+
+.node-row--dimmed:hover {
+  opacity: 0.7;
 }
 
 .node-row__number {

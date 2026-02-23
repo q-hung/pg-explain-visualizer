@@ -9,6 +9,7 @@ interface NodeRowProps {
   maxTime: number;
   settings: DisplaySettings;
   parentConnectors: boolean[];
+  filter?: string;
 }
 
 const formatRows = (actual: number | undefined, planned: number): string => {
@@ -80,6 +81,19 @@ const getNodeLabel = (node: PlanNode): string => {
   return label;
 };
 
+const nodeMatchesFilter = (node: PlanNode, filter: string): boolean => {
+  if (!filter) return true;
+  const lower = filter.toLowerCase();
+  const fields = [
+    node.nodeType,
+    node.relation,
+    node.alias,
+    node.indexName,
+    node.schema,
+  ].filter(Boolean) as string[];
+  return fields.some((f) => f.toLowerCase().includes(lower));
+};
+
 export const NodeRow: React.FC<NodeRowProps> = ({
   node,
   depth,
@@ -87,6 +101,7 @@ export const NodeRow: React.FC<NodeRowProps> = ({
   maxTime,
   settings,
   parentConnectors,
+  filter = "",
 }) => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -97,7 +112,17 @@ export const NodeRow: React.FC<NodeRowProps> = ({
     node.sortKey ||
     (node.buffers && settings.buffers);
 
-  // Build tree prefix
+  const matchesFilter = nodeMatchesFilter(node, filter);
+  const filterActive = filter.length > 0;
+  const rowClass = [
+    "node-row",
+    hasDetails ? "node-row--expandable" : "",
+    filterActive && matchesFilter ? "node-row--match" : "",
+    filterActive && !matchesFilter ? "node-row--dimmed" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const prefix = parentConnectors
     .map((showLine) => (showLine ? "\u2502 " : "  "))
     .join("");
@@ -105,10 +130,7 @@ export const NodeRow: React.FC<NodeRowProps> = ({
 
   return (
     <>
-      <div
-        className={`node-row ${hasDetails ? "node-row--expandable" : ""}`}
-        onClick={() => hasDetails && setExpanded(!expanded)}
-      >
+      <div className={rowClass} onClick={() => hasDetails && setExpanded(!expanded)}>
         <div className="node-row__number">#{node.id}</div>
         <div className="node-row__tree">
           <span className="tree-prefix">

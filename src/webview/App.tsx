@@ -20,6 +20,7 @@ export const App: React.FC<AppProps> = ({ planData }) => {
     cost: false,
     buffers: false,
   });
+  const [planFilter, setPlanFilter] = React.useState("");
 
   const toggleSetting = (key: keyof DisplaySettings) => {
     setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -74,8 +75,17 @@ export const App: React.FC<AppProps> = ({ planData }) => {
                 {key === "rows" ? "rows estimation" : key}
               </button>
             ))}
+            <span className="settings-label plan-filter-label">Filter</span>
+            <input
+              type="text"
+              className="plan-filter-input"
+              placeholder="Node type, relation, index…"
+              aria-label="Filter plan nodes"
+              value={planFilter}
+              onChange={(e) => setPlanFilter(e.target.value)}
+            />
           </div>
-          <PlanTree planData={planData} settings={settings} />
+          <PlanTree planData={planData} settings={settings} filter={planFilter.trim()} />
         </div>
       )}
 

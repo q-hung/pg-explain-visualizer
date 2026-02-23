@@ -5,6 +5,7 @@ import { NodeRow } from "./NodeRow";
 interface PlanTreeProps {
   planData: PlanData;
   settings: DisplaySettings;
+  filter?: string;
 }
 
 interface FlatNode {
@@ -32,7 +33,11 @@ const flattenTree = (
   return result;
 };
 
-export const PlanTree: React.FC<PlanTreeProps> = ({ planData, settings }) => {
+export const PlanTree: React.FC<PlanTreeProps> = ({
+  planData,
+  settings,
+  filter = "",
+}) => {
   const flatNodes = React.useMemo(
     () => flattenTree(planData.plan, 0, true, []),
     [planData.plan]
@@ -57,6 +62,7 @@ export const PlanTree: React.FC<PlanTreeProps> = ({ planData, settings }) => {
             maxTime={planData.maxTotalTime}
             settings={settings}
             parentConnectors={flat.parentConnectors}
+            filter={filter}
           />
         ))}
       </div>
