@@ -5,41 +5,12 @@ import { PlanTree } from "./components/PlanTree";
 import { StatsPanel } from "./components/StatsPanel";
 import { RawPanel } from "./components/RawPanel";
 import { QueryPanel } from "./components/QueryPanel";
+import { formatDuration } from "./utils/formatDuration";
 import "./styles/main.css";
 
 interface AppProps {
   planData: PlanData;
 }
-
-const formatTime = (ms: number | undefined): string => {
-  if (ms == null) {
-    return "N/A";
-  }
-  if (ms < 0.001) {
-    return `${(ms * 1000000).toFixed(0)} ns`;
-  }
-  if (ms < 0.1) {
-    return `${(ms * 1000).toFixed(0)} \u00b5s`;
-  }
-  if (ms < 1) {
-    return `${ms.toFixed(3)} ms`;
-  }
-  if (ms < 100) {
-    return `${ms.toFixed(1)} ms`;
-  }
-  if (ms < 1000) {
-    return `${Math.round(ms)} ms`;
-  }
-  const s = ms / 1000;
-  if (s < 60) {
-    const whole = Math.floor(s);
-    const frac = Math.round(ms % 1000);
-    return `${whole}s ${frac}ms`;
-  }
-  const min = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${min}m ${sec.toFixed(1)}s`;
-};
 
 export const App: React.FC<AppProps> = ({ planData }) => {
   const [activeTab, setActiveTab] = React.useState<TabId>("plan");
@@ -60,11 +31,13 @@ export const App: React.FC<AppProps> = ({ planData }) => {
         <div className="summary">
           <div className="summary-item">
             <span className="summary-label">Execution time:</span>
-            <span className="summary-value">{formatTime(planData.executionTime)}</span>
+            <span className="summary-value">
+              {formatDuration(planData.executionTime)}
+            </span>
           </div>
           <div className="summary-item">
             <span className="summary-label">Planning time:</span>
-            <span className="summary-value">{formatTime(planData.planningTime)}</span>
+            <span className="summary-value">{formatDuration(planData.planningTime)}</span>
           </div>
           {planData.triggers && planData.triggers.length > 0 && (
             <div className="summary-item">
@@ -76,7 +49,7 @@ export const App: React.FC<AppProps> = ({ planData }) => {
             <div className="summary-item">
               <span className="summary-label">JIT:</span>
               <span className="summary-value">
-                {formatTime(planData.jit.timing.total)}
+                {formatDuration(planData.jit.timing.total)}
               </span>
             </div>
           )}
