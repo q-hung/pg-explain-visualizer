@@ -11,29 +11,29 @@ interface NodeRowProps {
   parentConnectors: boolean[];
 }
 
-function formatRows(actual: number | undefined, planned: number): string {
+const formatRows = (actual: number | undefined, planned: number): string => {
   if (actual == null) {return `est. ${planned.toLocaleString()}`;}
   return actual.toLocaleString();
-}
+};
 
-function getRowEstimateClass(factor: number): string {
+const getRowEstimateClass = (factor: number): string => {
   if (factor === 0) {return "";}
   const absFactor = Math.abs(factor);
   if (absFactor > 1000) {return "rows-severe";}
   if (absFactor > 100) {return "rows-bad";}
   if (absFactor > 10) {return "rows-warning";}
   return "";
-}
+};
 
-function formatRowEstimate(factor: number): string {
+const formatRowEstimate = (factor: number): string => {
   if (factor === 0) {return "";}
   if (factor > 0) {
     return `\u2191 ${factor.toFixed(1)}x under`;
   }
   return `\u2193 ${Math.abs(factor).toFixed(1)}x over`;
-}
+};
 
-function formatBuffers(node: PlanNode): string {
+const formatBuffers = (node: PlanNode): string => {
   if (!node.buffers) {return "";}
   const parts: string[] = [];
   const b = node.buffers;
@@ -42,9 +42,9 @@ function formatBuffers(node: PlanNode): string {
   if (b.sharedDirtied) {parts.push(`dirtied=${b.sharedDirtied.toLocaleString()}`);}
   if (b.sharedWritten) {parts.push(`written=${b.sharedWritten.toLocaleString()}`);}
   return parts.length > 0 ? `shared ${parts.join(" ")}` : "";
-}
+};
 
-function getNodeLabel(node: PlanNode): string {
+const getNodeLabel = (node: PlanNode): string => {
   let label = node.nodeType;
   if (node.relation) {
     label += ` on ${node.relation}`;
@@ -56,7 +56,7 @@ function getNodeLabel(node: PlanNode): string {
     label += ` using ${node.indexName}`;
   }
   return label;
-}
+};
 
 export const NodeRow: React.FC<NodeRowProps> = ({
   node,

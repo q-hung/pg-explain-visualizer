@@ -2,7 +2,7 @@ import { PlanNode, PlanData, BufferStats, JitStats } from "../types";
 
 let nodeCounter = 0;
 
-function parseBuffers(raw: Record<string, unknown>): BufferStats | undefined {
+const parseBuffers = (raw: Record<string, unknown>): BufferStats | undefined => {
   const b: BufferStats = {};
   let hasAny = false;
 
@@ -27,9 +27,9 @@ function parseBuffers(raw: Record<string, unknown>): BufferStats | undefined {
   }
 
   return hasAny ? b : undefined;
-}
+};
 
-function parsePlanNode(raw: Record<string, unknown>): PlanNode {
+const parsePlanNode = (raw: Record<string, unknown>): PlanNode => {
   nodeCounter++;
 
   const children: PlanNode[] = [];
@@ -85,9 +85,9 @@ function parsePlanNode(raw: Record<string, unknown>): PlanNode {
   };
 
   return node;
-}
+};
 
-function parseJit(raw: Record<string, unknown>): JitStats | undefined {
+const parseJit = (raw: Record<string, unknown>): JitStats | undefined => {
   if (!raw) {return undefined;}
 
   return {
@@ -106,9 +106,9 @@ function parseJit(raw: Record<string, unknown>): JitStats | undefined {
       total: (raw["Timing"] as Record<string, number>)?.["Total"] ?? 0,
     },
   };
-}
+};
 
-export function parseJsonExplain(input: string): PlanData {
+export const parseJsonExplain = (input: string): PlanData => {
   const parsed = JSON.parse(input);
 
   // EXPLAIN (FORMAT JSON) returns an array with one element
@@ -133,4 +133,4 @@ export function parseJsonExplain(input: string): PlanData {
     query: root["Query Text"] as string | undefined,
     maxTotalTime: 0, // computed in post-processing
   };
-}
+};

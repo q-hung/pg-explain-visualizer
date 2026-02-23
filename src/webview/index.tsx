@@ -11,7 +11,7 @@ declare function acquireVsCodeApi(): {
 
 const vscode = acquireVsCodeApi();
 
-function Root() {
+const Root = () => {
   const [planData, setPlanData] = React.useState<PlanData | null>(null);
 
   React.useEffect(() => {
@@ -46,7 +46,7 @@ function Root() {
   }
 
   return <App planData={planData} />;
-}
+};
 
 const container = document.getElementById("root");
 if (container) {

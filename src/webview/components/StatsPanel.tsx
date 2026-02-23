@@ -10,15 +10,15 @@ interface StatsSection {
   entries: StatsEntry[];
 }
 
-function collectNodes(node: PlanNode): PlanNode[] {
+const collectNodes = (node: PlanNode): PlanNode[] => {
   const result: PlanNode[] = [node];
   for (const child of node.children) {
     result.push(...collectNodes(child));
   }
   return result;
-}
+};
 
-function computeStats(planData: PlanData): StatsSection[] {
+const computeStats = (planData: PlanData): StatsSection[] => {
   const allNodes = collectNodes(planData.plan);
   const totalTime = planData.maxTotalTime || 1;
 
@@ -127,9 +127,9 @@ function computeStats(planData: PlanData): StatsSection[] {
     { title: "Per node type stats", entries: typeEntries },
     { title: "Per index stats", entries: indexEntries },
   ];
-}
+};
 
-function formatDuration(ms: number): string {
+const formatDuration = (ms: number): string => {
   if (ms === 0) {return "0";}
   if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)}ns`;}
   if (ms < 0.1) {return `${(ms * 1000).toFixed(0)}\u00b5s`;}
@@ -145,7 +145,7 @@ function formatDuration(ms: number): string {
   const min = Math.floor(s / 60);
   const sec = s % 60;
   return `${min}m ${sec.toFixed(1)}s`;
-}
+};
 
 const StatsSectionComponent: React.FC<{
   section: StatsSection;

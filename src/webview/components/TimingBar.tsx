@@ -6,7 +6,7 @@ interface TimingBarProps {
   maxTime: number;
 }
 
-function formatDuration(ms: number): string {
+const formatDuration = (ms: number): string => {
   if (ms === 0) {return "0";}
   if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)}ns`;}
   if (ms < 0.1) {return `${(ms * 1000).toFixed(0)}\u00b5s`;}
@@ -22,7 +22,7 @@ function formatDuration(ms: number): string {
   const min = Math.floor(s / 60);
   const sec = s % 60;
   return `${min}m ${sec.toFixed(1)}s`;
-}
+};
 
 export const TimingBar: React.FC<TimingBarProps> = ({
   exclusiveTime,

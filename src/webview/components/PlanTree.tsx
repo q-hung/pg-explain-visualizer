@@ -14,12 +14,12 @@ interface FlatNode {
   parentConnectors: boolean[];
 }
 
-function flattenTree(
+const flattenTree = (
   node: PlanNode,
   depth: number,
   isLast: boolean,
   parentConnectors: boolean[]
-): FlatNode[] {
+): FlatNode[] => {
   const result: FlatNode[] = [];
   result.push({ node, depth, isLast, parentConnectors });
 
@@ -35,7 +35,7 @@ function flattenTree(
   });
 
   return result;
-}
+};
 
 export const PlanTree: React.FC<PlanTreeProps> = ({ planData, settings }) => {
   const flatNodes = React.useMemo(

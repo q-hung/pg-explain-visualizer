@@ -11,7 +11,7 @@ interface AppProps {
   planData: PlanData;
 }
 
-function formatTime(ms: number | undefined): string {
+const formatTime = (ms: number | undefined): string => {
   if (ms == null) {return "N/A";}
   if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)} ns`;}
   if (ms < 0.1) {return `${(ms * 1000).toFixed(0)} \u00b5s`;}
@@ -27,7 +27,7 @@ function formatTime(ms: number | undefined): string {
   const min = Math.floor(s / 60);
   const sec = s % 60;
   return `${min}m ${sec.toFixed(1)}s`;
-}
+};
 
 export const App: React.FC<AppProps> = ({ planData }) => {
   const [activeTab, setActiveTab] = React.useState<TabId>("plan");

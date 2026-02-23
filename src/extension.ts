@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
-import { parseExplain } from "./parser/index";
-import { PlanData } from "./types";
+import {parseExplain} from "./parser/index";
+import {PlanData} from "./types";
 
 let currentPanel: vscode.WebviewPanel | undefined;
 
-export function activate(context: vscode.ExtensionContext) {
+export const activate = (context: vscode.ExtensionContext) => {
   // Command: Visualize selected text
   context.subscriptions.push(
     vscode.commands.registerCommand("pgExplain.visualizeSelection", () => {
@@ -19,13 +19,13 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (!text.trim()) {
         vscode.window.showErrorMessage(
-          "No text selected. Please select EXPLAIN output first."
+          "No text selected. Please select EXPLAIN output first.",
         );
         return;
       }
 
       visualize(context, text);
-    })
+    }),
   );
 
   // Command: Visualize current file
@@ -44,18 +44,20 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       visualize(context, text);
-    })
+    }),
   );
-}
+};
 
-function visualize(context: vscode.ExtensionContext, rawText: string): void {
+const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
   let planData: PlanData;
 
   try {
     planData = parseExplain(rawText);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    vscode.window.showErrorMessage(`Failed to parse EXPLAIN output: ${message}`);
+    vscode.window.showErrorMessage(
+      `Failed to parse EXPLAIN output: ${message}`,
+    );
     return;
   }
 
@@ -69,10 +71,8 @@ function visualize(context: vscode.ExtensionContext, rawText: string): void {
       {
         enableScripts: true,
         retainContextWhenHidden: true,
-        localResourceRoots: [
-          vscode.Uri.joinPath(context.extensionUri, "dist"),
-        ],
-      }
+        localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, "dist")],
+      },
     );
 
     currentPanel.onDidDispose(() => {
@@ -82,7 +82,7 @@ function visualize(context: vscode.ExtensionContext, rawText: string): void {
 
   currentPanel.webview.html = getWebviewContent(
     currentPanel.webview,
-    context.extensionUri
+    context.extensionUri,
   );
 
   // Send data to webview once it's ready
@@ -103,17 +103,17 @@ function visualize(context: vscode.ExtensionContext, rawText: string): void {
       });
     }
   });
-}
+};
 
-function getWebviewContent(
+const getWebviewContent = (
   webview: vscode.Webview,
-  extensionUri: vscode.Uri
-): string {
+  extensionUri: vscode.Uri,
+): string => {
   const scriptUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "dist", "webview.js")
+    vscode.Uri.joinPath(extensionUri, "dist", "webview.js"),
   );
   const styleUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "dist", "webview.css")
+    vscode.Uri.joinPath(extensionUri, "dist", "webview.css"),
   );
 
   const nonce = getNonce();
@@ -146,9 +146,9 @@ function getWebviewContent(
   <script nonce="${nonce}" src="${scriptUri}"></script>
 </body>
 </html>`;
-}
+};
 
-function getNonce(): string {
+const getNonce = (): string => {
   let text = "";
   const possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -156,6 +156,6 @@ function getNonce(): string {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
-}
+};
 
-export function deactivate() {}
+export const deactivate = () => {};

@@ -25,12 +25,12 @@ const NODE_REGEX =
 const BUFFERS_REGEX =
   /Buffers:\s*(?:shared hit=(\d+))?\s*(?:read=(\d+))?\s*(?:dirtied=(\d+))?\s*(?:written=(\d+))?/;
 
-function getIndentDepth(prefix: string): number {
+const getIndentDepth = (prefix: string): number => {
   // Use the raw prefix length as the depth indicator.
   // The buildTree function uses relative depth comparison (not absolute levels),
   // so we just need a consistent numeric value where deeper nodes > shallower nodes.
   return prefix.length;
-}
+};
 
 /**
  * Parse the description part (everything before "(cost=...") to extract
@@ -43,12 +43,12 @@ function getIndentDepth(prefix: string): number {
  *   "Subquery Scan on subq"
  *   "Parallel Index Scan using \"PK_abc\" on trigger t"
  */
-function parseDescription(desc: string): {
+const parseDescription = (desc: string): {
   nodeType: string;
   relation?: string;
   alias?: string;
   indexName?: string;
-} {
+} => {
   let nodeType = desc;
   let relation: string | undefined;
   let alias: string | undefined;
@@ -84,9 +84,9 @@ function parseDescription(desc: string): {
   }
 
   return { nodeType: nodeType.trim() };
-}
+};
 
-function parseNodeLine(line: string): RawNodeLine | null {
+const parseNodeLine = (line: string): RawNodeLine | null => {
   const match = line.match(NODE_REGEX);
   if (!match) {return null;}
 
@@ -109,9 +109,9 @@ function parseNodeLine(line: string): RawNodeLine | null {
     actualRows: match[9] ? parseInt(match[9], 10) : undefined,
     actualLoops: match[10] ? parseInt(match[10], 10) : undefined,
   };
-}
+};
 
-function parseBuffersLine(line: string): BufferStats | null {
+const parseBuffersLine = (line: string): BufferStats | null => {
   const match = line.match(BUFFERS_REGEX);
   if (!match) {return null;}
 
@@ -124,9 +124,9 @@ function parseBuffersLine(line: string): BufferStats | null {
   if (match[4]) { b.sharedWritten = parseInt(match[4], 10); hasAny = true; }
 
   return hasAny ? b : null;
-}
+};
 
-function buildTree(nodes: Array<{ raw: RawNodeLine; extras: string[] }>): PlanNode {
+const buildTree = (nodes: Array<{ raw: RawNodeLine; extras: string[] }>): PlanNode => {
   if (nodes.length === 0) {
     throw new Error("No plan nodes found in EXPLAIN output");
   }
@@ -223,9 +223,9 @@ function buildTree(nodes: Array<{ raw: RawNodeLine; extras: string[] }>): PlanNo
 
   // Root is the first node
   return planNodes[0];
-}
+};
 
-export function parseTextExplain(input: string): PlanData {
+export const parseTextExplain = (input: string): PlanData => {
   const lines = input.split("\n");
   nodeCounter = 0;
 
@@ -361,4 +361,4 @@ export function parseTextExplain(input: string): PlanData {
     rawText: input,
     maxTotalTime: 0,
   };
-}
+};

@@ -5,9 +5,8 @@ import { parseTextExplain } from "./textParser";
 /**
  * Determine if a node is a Gather or Gather Merge (parallel root).
  */
-function isGatherNode(node: PlanNode): boolean {
-  return node.nodeType === "Gather" || node.nodeType === "Gather Merge";
-}
+const isGatherNode = (node: PlanNode): boolean =>
+  node.nodeType === "Gather" || node.nodeType === "Gather Merge";
 
 /**
  * Compute totalTimeMs, exclusiveTime, and rowEstimateFactor for all nodes
@@ -18,11 +17,11 @@ function isGatherNode(node: PlanNode): boolean {
  * worker multiplier (workers launched + 1) so that the times represent
  * wall-clock contribution rather than total CPU time across all workers.
  */
-function postProcess(
+const postProcess = (
   node: PlanNode,
   maxTotalTime: { value: number },
   workerMultiplier: number = 1
-): void {
+): void => {
   // Compute this node's adjusted total time
   const rawAccum =
     (node.actualTotalTime ?? 0) * (node.actualLoops ?? 1);
@@ -66,12 +65,12 @@ function postProcess(
   if (node.totalTimeMs > maxTotalTime.value) {
     maxTotalTime.value = node.totalTimeMs;
   }
-}
+};
 
 /**
  * Detect format and parse EXPLAIN output into structured PlanData.
  */
-export function parseExplain(input: string): PlanData {
+export const parseExplain = (input: string): PlanData => {
   const trimmed = input.trim();
 
   let planData: PlanData;
@@ -94,4 +93,4 @@ export function parseExplain(input: string): PlanData {
   planData.maxTotalTime = maxTotalTime.value;
 
   return planData;
-}
+};
