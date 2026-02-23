@@ -117,8 +117,16 @@ export const parseJsonExplain = (input: string): PlanData => {
   // EXPLAIN (FORMAT JSON) returns an array with one element
   const root = Array.isArray(parsed) ? parsed[0] : parsed;
 
+  if (root == null || typeof root !== "object" || Array.isArray(root)) {
+    throw new Error("Invalid EXPLAIN JSON: expected a non-empty plan object");
+  }
+  const planRaw = root["Plan"];
+  if (planRaw == null || typeof planRaw !== "object" || Array.isArray(planRaw)) {
+    throw new Error("Invalid EXPLAIN JSON: missing or invalid Plan");
+  }
+
   nodeCounter = 0;
-  const plan = parsePlanNode(root["Plan"] as Record<string, unknown>);
+  const plan = parsePlanNode(planRaw as Record<string, unknown>);
 
   return {
     plan,

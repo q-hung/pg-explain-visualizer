@@ -15,6 +15,36 @@ describe("parseJsonExplain", () => {
       expect(() => parseJsonExplain("not json")).toThrow();
       expect(() => parseJsonExplain("{")).toThrow();
     });
+
+    it("throws when root is missing (empty array)", () => {
+      expect(() => parseJsonExplain("[]")).toThrow(
+        "Invalid EXPLAIN JSON: expected a non-empty plan object"
+      );
+    });
+
+    it("throws when root is null", () => {
+      expect(() => parseJsonExplain("[null]")).toThrow(
+        "Invalid EXPLAIN JSON: expected a non-empty plan object"
+      );
+    });
+
+    it("throws when Plan is missing", () => {
+      expect(() => parseJsonExplain("[{}]")).toThrow(
+        "Invalid EXPLAIN JSON: missing or invalid Plan"
+      );
+    });
+
+    it("throws when Plan is null", () => {
+      expect(() => parseJsonExplain('[{"Plan": null}]')).toThrow(
+        "Invalid EXPLAIN JSON: missing or invalid Plan"
+      );
+    });
+
+    it("throws when Plan is not an object", () => {
+      expect(() => parseJsonExplain('[{"Plan": []}]')).toThrow(
+        "Invalid EXPLAIN JSON: missing or invalid Plan"
+      );
+    });
   });
 
   describe("root format", () => {
