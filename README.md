@@ -37,21 +37,21 @@ Visualize PostgreSQL `EXPLAIN ANALYZE` output directly inside VS Code -- no need
 
 In the Plan tab, use the settings bar to toggle:
 
-| Toggle | Description |
-|--------|-------------|
-| **time** | Show/hide timing bars (exclusive and total) |
-| **rows estimation** | Show/hide actual vs estimated row counts |
-| **cost** | Show/hide planner cost estimates |
-| **buffers** | Show/hide buffer usage in expanded node details |
+| Toggle              | Description                                     |
+| ------------------- | ----------------------------------------------- |
+| **time**            | Show/hide timing bars (exclusive and total)     |
+| **rows estimation** | Show/hide actual vs estimated row counts        |
+| **cost**            | Show/hide planner cost estimates                |
+| **buffers**         | Show/hide buffer usage in expanded node details |
 
 ## Tabs
 
-| Tab | Description |
-|-----|-------------|
-| **Plan** | Interactive tree view of the query plan |
+| Tab       | Description                                      |
+| --------- | ------------------------------------------------ |
+| **Plan**  | Interactive tree view of the query plan          |
 | **Stats** | Aggregated stats per table, node type, and index |
-| **Query** | Query text (available with JSON format input) |
-| **Raw** | Original EXPLAIN output as plain text |
+| **Query** | Query text (available with JSON format input)    |
+| **Raw**   | Original EXPLAIN output as plain text            |
 
 ## Supported Formats
 

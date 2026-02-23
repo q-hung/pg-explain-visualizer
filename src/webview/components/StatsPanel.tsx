@@ -130,12 +130,24 @@ const computeStats = (planData: PlanData): StatsSection[] => {
 };
 
 const formatDuration = (ms: number): string => {
-  if (ms === 0) {return "0";}
-  if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)}ns`;}
-  if (ms < 0.1) {return `${(ms * 1000).toFixed(0)}\u00b5s`;}
-  if (ms < 1) {return `${ms.toFixed(3)}ms`;}
-  if (ms < 100) {return `${ms.toFixed(1)}ms`;}
-  if (ms < 1000) {return `${Math.round(ms)}ms`;}
+  if (ms === 0) {
+    return "0";
+  }
+  if (ms < 0.001) {
+    return `${(ms * 1000000).toFixed(0)}ns`;
+  }
+  if (ms < 0.1) {
+    return `${(ms * 1000).toFixed(0)}\u00b5s`;
+  }
+  if (ms < 1) {
+    return `${ms.toFixed(3)}ms`;
+  }
+  if (ms < 100) {
+    return `${ms.toFixed(1)}ms`;
+  }
+  if (ms < 1000) {
+    return `${Math.round(ms)}ms`;
+  }
   const s = ms / 1000;
   if (s < 60) {
     const whole = Math.floor(s);
@@ -150,9 +162,7 @@ const formatDuration = (ms: number): string => {
 const StatsSectionComponent: React.FC<{
   section: StatsSection;
 }> = ({ section }) => {
-  const [expandedEntries, setExpandedEntries] = React.useState<Set<string>>(
-    new Set()
-  );
+  const [expandedEntries, setExpandedEntries] = React.useState<Set<string>>(new Set());
 
   const toggleEntry = (name: string) => {
     setExpandedEntries((prev) => {
@@ -166,7 +176,9 @@ const StatsSectionComponent: React.FC<{
     });
   };
 
-  if (section.entries.length === 0) {return null;}
+  if (section.entries.length === 0) {
+    return null;
+  }
 
   return (
     <div className="stats-section">
@@ -178,8 +190,8 @@ const StatsSectionComponent: React.FC<{
               {section.title.includes("table")
                 ? "Table"
                 : section.title.includes("index")
-                ? "Index Name"
-                : "Node Type"}
+                  ? "Index Name"
+                  : "Node Type"}
             </th>
             <th className="stats-table__count">Count</th>
             <th className="stats-table__time">Time &#x25BC;</th>
@@ -214,7 +226,10 @@ const StatsSectionComponent: React.FC<{
               </tr>
               {expandedEntries.has(entry.name) &&
                 entry.nodes.map((n) => (
-                  <tr key={`${entry.name}-${n.id}`} className="stats-row stats-row--child">
+                  <tr
+                    key={`${entry.name}-${n.id}`}
+                    className="stats-row stats-row--child"
+                  >
                     <td className="stats-table__name stats-child-name">
                       #{n.id} {n.nodeType}
                     </td>
@@ -230,9 +245,7 @@ const StatsSectionComponent: React.FC<{
                             }}
                           />
                         </div>
-                        <span className="stats-pct">
-                          {n.percentage.toFixed(0)}%
-                        </span>
+                        <span className="stats-pct">{n.percentage.toFixed(0)}%</span>
                       </div>
                     </td>
                   </tr>

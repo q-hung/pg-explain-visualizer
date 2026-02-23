@@ -12,12 +12,24 @@ interface AppProps {
 }
 
 const formatTime = (ms: number | undefined): string => {
-  if (ms == null) {return "N/A";}
-  if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)} ns`;}
-  if (ms < 0.1) {return `${(ms * 1000).toFixed(0)} \u00b5s`;}
-  if (ms < 1) {return `${ms.toFixed(3)} ms`;}
-  if (ms < 100) {return `${ms.toFixed(1)} ms`;}
-  if (ms < 1000) {return `${Math.round(ms)} ms`;}
+  if (ms == null) {
+    return "N/A";
+  }
+  if (ms < 0.001) {
+    return `${(ms * 1000000).toFixed(0)} ns`;
+  }
+  if (ms < 0.1) {
+    return `${(ms * 1000).toFixed(0)} \u00b5s`;
+  }
+  if (ms < 1) {
+    return `${ms.toFixed(3)} ms`;
+  }
+  if (ms < 100) {
+    return `${ms.toFixed(1)} ms`;
+  }
+  if (ms < 1000) {
+    return `${Math.round(ms)} ms`;
+  }
   const s = ms / 1000;
   if (s < 60) {
     const whole = Math.floor(s);
@@ -63,7 +75,9 @@ export const App: React.FC<AppProps> = ({ planData }) => {
           {planData.jit && (
             <div className="summary-item">
               <span className="summary-label">JIT:</span>
-              <span className="summary-value">{formatTime(planData.jit.timing.total)}</span>
+              <span className="summary-value">
+                {formatTime(planData.jit.timing.total)}
+              </span>
             </div>
           )}
         </div>

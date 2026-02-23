@@ -43,7 +43,9 @@ const getIndentDepth = (prefix: string): number => {
  *   "Subquery Scan on subq"
  *   "Parallel Index Scan using \"PK_abc\" on trigger t"
  */
-const parseDescription = (desc: string): {
+const parseDescription = (
+  desc: string
+): {
   nodeType: string;
   relation?: string;
   alias?: string;
@@ -88,7 +90,9 @@ const parseDescription = (desc: string): {
 
 const parseNodeLine = (line: string): RawNodeLine | null => {
   const match = line.match(NODE_REGEX);
-  if (!match) {return null;}
+  if (!match) {
+    return null;
+  }
 
   const prefix = match[1] || "";
   const description = match[2].trim();
@@ -113,15 +117,29 @@ const parseNodeLine = (line: string): RawNodeLine | null => {
 
 const parseBuffersLine = (line: string): BufferStats | null => {
   const match = line.match(BUFFERS_REGEX);
-  if (!match) {return null;}
+  if (!match) {
+    return null;
+  }
 
   const b: BufferStats = {};
   let hasAny = false;
 
-  if (match[1]) { b.sharedHit = parseInt(match[1], 10); hasAny = true; }
-  if (match[2]) { b.sharedRead = parseInt(match[2], 10); hasAny = true; }
-  if (match[3]) { b.sharedDirtied = parseInt(match[3], 10); hasAny = true; }
-  if (match[4]) { b.sharedWritten = parseInt(match[4], 10); hasAny = true; }
+  if (match[1]) {
+    b.sharedHit = parseInt(match[1], 10);
+    hasAny = true;
+  }
+  if (match[2]) {
+    b.sharedRead = parseInt(match[2], 10);
+    hasAny = true;
+  }
+  if (match[3]) {
+    b.sharedDirtied = parseInt(match[3], 10);
+    hasAny = true;
+  }
+  if (match[4]) {
+    b.sharedWritten = parseInt(match[4], 10);
+    hasAny = true;
+  }
 
   return hasAny ? b : null;
 };
@@ -198,7 +216,9 @@ const buildTree = (nodes: Array<{ raw: RawNodeLine; extras: string[] }>): PlanNo
         );
       } else if (trimmed.startsWith("Buffers:")) {
         const buffers = parseBuffersLine(trimmed);
-        if (buffers) {node.buffers = buffers;}
+        if (buffers) {
+          node.buffers = buffers;
+        }
       } else if (trimmed.startsWith("Output:")) {
         node.output = trimmed
           .substring("Output:".length)
@@ -244,7 +264,9 @@ export const parseTextExplain = (input: string): PlanData => {
     const line = lines[i];
     const trimmed = line.trim();
 
-    if (!trimmed) {continue;}
+    if (!trimmed) {
+      continue;
+    }
 
     // Check for metadata lines
     const execMatch = trimmed.match(/^Execution Time:\s*([\d.]+)\s*ms/);
@@ -260,7 +282,9 @@ export const parseTextExplain = (input: string): PlanData => {
     }
 
     // Planning buffers
-    if (trimmed.startsWith("Planning:")) {continue;}
+    if (trimmed.startsWith("Planning:")) {
+      continue;
+    }
 
     // JIT section
     if (trimmed === "JIT:") {
@@ -317,9 +341,7 @@ export const parseTextExplain = (input: string): PlanData => {
     }
 
     // Trigger lines
-    const triggerMatch = trimmed.match(
-      /^Trigger\s+(.+?):\s*time=([\d.]+)\s*calls=(\d+)/
-    );
+    const triggerMatch = trimmed.match(/^Trigger\s+(.+?):\s*time=([\d.]+)\s*calls=(\d+)/);
     if (triggerMatch) {
       triggers.push({
         name: triggerMatch[1],

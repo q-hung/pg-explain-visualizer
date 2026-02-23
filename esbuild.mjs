@@ -37,10 +37,7 @@ async function build() {
     await Promise.all([extCtx.watch(), webCtx.watch()]);
     console.log("[watch] Build started...");
   } else {
-    await Promise.all([
-      esbuild.build(extensionConfig),
-      esbuild.build(webviewConfig),
-    ]);
+    await Promise.all([esbuild.build(extensionConfig), esbuild.build(webviewConfig)]);
     console.log("Build complete.");
   }
 }

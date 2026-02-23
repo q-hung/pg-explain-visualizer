@@ -10,7 +10,14 @@
 body {
   background: var(--vscode-editor-background);
   color: var(--vscode-editor-foreground);
-  font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-family: var(
+    --vscode-font-family,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif
+  );
   font-size: var(--vscode-font-size, 13px);
   line-height: 1.5;
 }
@@ -40,7 +47,8 @@ body {
   gap: 24px;
   padding: 12px 16px;
   background: var(--vscode-sideBar-background, var(--vscode-editor-background));
-  border: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  border: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
   border-radius: 6px;
   margin-bottom: 12px;
   flex-wrap: wrap;
@@ -66,7 +74,8 @@ body {
 .tabs {
   display: flex;
   gap: 2px;
-  border-bottom: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  border-bottom: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
 }
 
 .tab {
@@ -78,7 +87,9 @@ body {
   font-size: 13px;
   font-family: inherit;
   border-bottom: 2px solid transparent;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
   opacity: 0.7;
 }
 
@@ -114,7 +125,7 @@ body {
 }
 
 .setting-toggle {
-  background: var(--vscode-button-secondaryBackground, rgba(128,128,128,0.15));
+  background: var(--vscode-button-secondaryBackground, rgba(128, 128, 128, 0.15));
   border: 1px solid var(--vscode-button-secondaryBorder, transparent);
   color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
   padding: 4px 12px;
@@ -126,7 +137,7 @@ body {
 }
 
 .setting-toggle:hover {
-  background: var(--vscode-button-secondaryHoverBackground, rgba(128,128,128,0.25));
+  background: var(--vscode-button-secondaryHoverBackground, rgba(128, 128, 128, 0.25));
 }
 
 .setting-toggle--active {
@@ -141,7 +152,8 @@ body {
 
 /* ===== Plan Tree ===== */
 .plan-tree {
-  border: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  border: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
   border-radius: 6px;
   overflow: hidden;
 }
@@ -150,8 +162,9 @@ body {
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  background: var(--vscode-sideBarSectionHeader-background, rgba(128,128,128,0.1));
-  border-bottom: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  background: var(--vscode-sideBarSectionHeader-background, rgba(128, 128, 128, 0.1));
+  border-bottom: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -193,12 +206,12 @@ body {
   align-items: center;
   padding: 6px 12px;
   gap: 8px;
-  border-bottom: 1px solid var(--vscode-panel-border, rgba(128,128,128,0.08));
+  border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.08));
   transition: background 0.1s;
 }
 
 .node-row:hover {
-  background: var(--vscode-list-hoverBackground, rgba(128,128,128,0.1));
+  background: var(--vscode-list-hoverBackground, rgba(128, 128, 128, 0.1));
 }
 
 .node-row--expandable {
@@ -225,7 +238,7 @@ body {
 .tree-prefix {
   white-space: pre;
   font-family: var(--vscode-editor-font-family, monospace);
-  color: var(--vscode-editorLineNumber-foreground, rgba(128,128,128,0.5));
+  color: var(--vscode-editorLineNumber-foreground, rgba(128, 128, 128, 0.5));
   font-size: 12px;
   flex-shrink: 0;
 }
@@ -345,8 +358,8 @@ body {
 .node-details {
   display: flex;
   padding: 4px 12px 8px;
-  background: var(--vscode-editor-inactiveSelectionBackground, rgba(128,128,128,0.04));
-  border-bottom: 1px solid var(--vscode-panel-border, rgba(128,128,128,0.08));
+  background: var(--vscode-editor-inactiveSelectionBackground, rgba(128, 128, 128, 0.04));
+  border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.08));
 }
 
 .node-details__indent {
@@ -397,7 +410,8 @@ body {
 .stats-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  border: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
   border-radius: 6px;
   overflow: hidden;
 }
@@ -410,12 +424,12 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--vscode-descriptionForeground);
-  background: var(--vscode-sideBarSectionHeader-background, rgba(128,128,128,0.1));
-  border-bottom: 1px solid var(--vscode-panel-border, rgba(128,128,128,0.2));
+  background: var(--vscode-sideBarSectionHeader-background, rgba(128, 128, 128, 0.1));
+  border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.2));
 }
 
 .stats-row {
-  border-bottom: 1px solid var(--vscode-panel-border, rgba(128,128,128,0.08));
+  border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.08));
   transition: background 0.1s;
 }
 
@@ -424,11 +438,11 @@ body {
 }
 
 .stats-row--parent:hover {
-  background: var(--vscode-list-hoverBackground, rgba(128,128,128,0.1));
+  background: var(--vscode-list-hoverBackground, rgba(128, 128, 128, 0.1));
 }
 
 .stats-row--child {
-  background: var(--vscode-editor-inactiveSelectionBackground, rgba(128,128,128,0.04));
+  background: var(--vscode-editor-inactiveSelectionBackground, rgba(128, 128, 128, 0.04));
 }
 
 .stats-row td {
@@ -503,8 +517,9 @@ body {
 
 .raw-output,
 .query-output {
-  background: var(--vscode-textCodeBlock-background, rgba(128,128,128,0.08));
-  border: 1px solid var(--vscode-panel-border, var(--vscode-widget-border, rgba(128,128,128,0.2)));
+  background: var(--vscode-textCodeBlock-background, rgba(128, 128, 128, 0.08));
+  border: 1px solid
+    var(--vscode-panel-border, var(--vscode-widget-border, rgba(128, 128, 128, 0.2)));
   border-radius: 6px;
   padding: 16px;
   font-family: var(--vscode-editor-font-family, monospace);
@@ -532,12 +547,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--vscode-scrollbarSlider-background, rgba(128,128,128,0.3));
+  background: var(--vscode-scrollbarSlider-background, rgba(128, 128, 128, 0.3));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--vscode-scrollbarSlider-hoverBackground, rgba(128,128,128,0.5));
+  background: var(--vscode-scrollbarSlider-hoverBackground, rgba(128, 128, 128, 0.5));
 }
 
 /* ===== Responsive ===== */

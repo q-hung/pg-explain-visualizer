@@ -7,12 +7,24 @@ interface TimingBarProps {
 }
 
 const formatDuration = (ms: number): string => {
-  if (ms === 0) {return "0";}
-  if (ms < 0.001) {return `${(ms * 1000000).toFixed(0)}ns`;}
-  if (ms < 0.1) {return `${(ms * 1000).toFixed(0)}\u00b5s`;}
-  if (ms < 1) {return `${ms.toFixed(3)}ms`;}
-  if (ms < 100) {return `${ms.toFixed(1)}ms`;}
-  if (ms < 1000) {return `${Math.round(ms)}ms`;}
+  if (ms === 0) {
+    return "0";
+  }
+  if (ms < 0.001) {
+    return `${(ms * 1000000).toFixed(0)}ns`;
+  }
+  if (ms < 0.1) {
+    return `${(ms * 1000).toFixed(0)}\u00b5s`;
+  }
+  if (ms < 1) {
+    return `${ms.toFixed(3)}ms`;
+  }
+  if (ms < 100) {
+    return `${ms.toFixed(1)}ms`;
+  }
+  if (ms < 1000) {
+    return `${Math.round(ms)}ms`;
+  }
   const s = ms / 1000;
   if (s < 60) {
     const whole = Math.floor(s);
@@ -29,14 +41,19 @@ export const TimingBar: React.FC<TimingBarProps> = ({
   totalTime,
   maxTime,
 }) => {
-  if (maxTime === 0) {return null;}
+  if (maxTime === 0) {
+    return null;
+  }
 
   const exclusivePct = (exclusiveTime / maxTime) * 100;
   const totalPct = (totalTime / maxTime) * 100;
 
   return (
     <div className="timing-bar-container">
-      <div className="timing-bar" title={`Exclusive: ${formatDuration(exclusiveTime)}, Total: ${formatDuration(totalTime)}`}>
+      <div
+        className="timing-bar"
+        title={`Exclusive: ${formatDuration(exclusiveTime)}, Total: ${formatDuration(totalTime)}`}
+      >
         <div
           className="timing-bar__total"
           style={{ width: `${Math.min(totalPct, 100)}%` }}

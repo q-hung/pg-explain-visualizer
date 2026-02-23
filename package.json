@@ -79,7 +79,9 @@
     "vscode:prepublish": "node esbuild.mjs",
     "build": "node esbuild.mjs",
     "watch": "node esbuild.mjs --watch",
-    "package": "vsce package"
+    "package": "vsce package",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
@@ -87,6 +89,7 @@
     "@types/react-dom": "^18.2.0",
     "@types/vscode": "^1.85.0",
     "esbuild": "^0.20.0",
+    "prettier": "^3.8.1",
     "typescript": "^5.3.0"
   },
   "dependencies": {

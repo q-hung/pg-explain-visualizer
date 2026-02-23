@@ -25,13 +25,8 @@ const flattenTree = (
 
   node.children.forEach((child, idx) => {
     const childIsLast = idx === node.children.length - 1;
-    const newConnectors =
-      depth === 0
-        ? []
-        : [...parentConnectors, !isLast];
-    result.push(
-      ...flattenTree(child, depth + 1, childIsLast, newConnectors)
-    );
+    const newConnectors = depth === 0 ? [] : [...parentConnectors, !isLast];
+    result.push(...flattenTree(child, depth + 1, childIsLast, newConnectors));
   });
 
   return result;

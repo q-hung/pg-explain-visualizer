@@ -30,6 +30,7 @@ A VS Code / Cursor extension that visualizes PostgreSQL `EXPLAIN (ANALYZE)` outp
 ## Display Settings
 
 Toggle these in the Plan tab:
+
 - **time** -- Show/hide timing bars
 - **rows estimation** -- Show/hide actual vs. estimated row counts
 - **cost** -- Show/hide planner cost estimates
@@ -53,11 +54,13 @@ Press `F5` in VS Code to launch the Extension Development Host for testing.
 ## Supported Formats
 
 ### TEXT format
+
 ```
 EXPLAIN (ANALYZE, BUFFERS) SELECT ...;
 ```
 
 ### JSON format
+
 ```
 EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) SELECT ...;
 ```

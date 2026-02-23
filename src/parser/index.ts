@@ -23,8 +23,7 @@ const postProcess = (
   workerMultiplier: number = 1
 ): void => {
   // Compute this node's adjusted total time
-  const rawAccum =
-    (node.actualTotalTime ?? 0) * (node.actualLoops ?? 1);
+  const rawAccum = (node.actualTotalTime ?? 0) * (node.actualLoops ?? 1);
   node.totalTimeMs = rawAccum / workerMultiplier;
 
   // Determine worker multiplier for children
@@ -44,10 +43,7 @@ const postProcess = (
   }
 
   // Compute exclusive time = own total - sum of children's total
-  const childrenTotal = node.children.reduce(
-    (sum, child) => sum + child.totalTimeMs,
-    0
-  );
+  const childrenTotal = node.children.reduce((sum, child) => sum + child.totalTimeMs, 0);
   node.exclusiveTime = Math.max(0, node.totalTimeMs - childrenTotal);
 
   // Row estimation factor

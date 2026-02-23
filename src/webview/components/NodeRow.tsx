@@ -12,21 +12,33 @@ interface NodeRowProps {
 }
 
 const formatRows = (actual: number | undefined, planned: number): string => {
-  if (actual == null) {return `est. ${planned.toLocaleString()}`;}
+  if (actual == null) {
+    return `est. ${planned.toLocaleString()}`;
+  }
   return actual.toLocaleString();
 };
 
 const getRowEstimateClass = (factor: number): string => {
-  if (factor === 0) {return "";}
+  if (factor === 0) {
+    return "";
+  }
   const absFactor = Math.abs(factor);
-  if (absFactor > 1000) {return "rows-severe";}
-  if (absFactor > 100) {return "rows-bad";}
-  if (absFactor > 10) {return "rows-warning";}
+  if (absFactor > 1000) {
+    return "rows-severe";
+  }
+  if (absFactor > 100) {
+    return "rows-bad";
+  }
+  if (absFactor > 10) {
+    return "rows-warning";
+  }
   return "";
 };
 
 const formatRowEstimate = (factor: number): string => {
-  if (factor === 0) {return "";}
+  if (factor === 0) {
+    return "";
+  }
   if (factor > 0) {
     return `\u2191 ${factor.toFixed(1)}x under`;
   }
@@ -34,13 +46,23 @@ const formatRowEstimate = (factor: number): string => {
 };
 
 const formatBuffers = (node: PlanNode): string => {
-  if (!node.buffers) {return "";}
+  if (!node.buffers) {
+    return "";
+  }
   const parts: string[] = [];
   const b = node.buffers;
-  if (b.sharedHit) {parts.push(`hit=${b.sharedHit.toLocaleString()}`);}
-  if (b.sharedRead) {parts.push(`read=${b.sharedRead.toLocaleString()}`);}
-  if (b.sharedDirtied) {parts.push(`dirtied=${b.sharedDirtied.toLocaleString()}`);}
-  if (b.sharedWritten) {parts.push(`written=${b.sharedWritten.toLocaleString()}`);}
+  if (b.sharedHit) {
+    parts.push(`hit=${b.sharedHit.toLocaleString()}`);
+  }
+  if (b.sharedRead) {
+    parts.push(`read=${b.sharedRead.toLocaleString()}`);
+  }
+  if (b.sharedDirtied) {
+    parts.push(`dirtied=${b.sharedDirtied.toLocaleString()}`);
+  }
+  if (b.sharedWritten) {
+    parts.push(`written=${b.sharedWritten.toLocaleString()}`);
+  }
   return parts.length > 0 ? `shared ${parts.join(" ")}` : "";
 };
 
@@ -89,7 +111,10 @@ export const NodeRow: React.FC<NodeRowProps> = ({
       >
         <div className="node-row__number">#{node.id}</div>
         <div className="node-row__tree">
-          <span className="tree-prefix">{prefix}{connector}</span>
+          <span className="tree-prefix">
+            {prefix}
+            {connector}
+          </span>
           <span className="node-type">{getNodeLabel(node)}</span>
         </div>
 
@@ -111,7 +136,9 @@ export const NodeRow: React.FC<NodeRowProps> = ({
               </span>
               <span className="rows-planned">{node.planRows.toLocaleString()}</span>
               {node.rowEstimateFactor !== 0 && (
-                <span className={`rows-estimate ${getRowEstimateClass(node.rowEstimateFactor)}`}>
+                <span
+                  className={`rows-estimate ${getRowEstimateClass(node.rowEstimateFactor)}`}
+                >
                   {formatRowEstimate(node.rowEstimateFactor)}
                 </span>
               )}
@@ -129,7 +156,10 @@ export const NodeRow: React.FC<NodeRowProps> = ({
       {expanded && hasDetails && (
         <div className="node-details">
           <div className="node-details__indent">
-            <span className="tree-prefix">{prefix}{"  "}</span>
+            <span className="tree-prefix">
+              {prefix}
+              {"  "}
+            </span>
           </div>
           <div className="node-details__content">
             {node.filter && (

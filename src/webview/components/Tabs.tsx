@@ -19,7 +19,9 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange, hasQuery }) 
   return (
     <div className="tabs">
       {tabs.map((tab) => {
-        if (tab.id === "query" && !hasQuery) {return null;}
+        if (tab.id === "query" && !hasQuery) {
+          return null;
+        }
         return (
           <button
             key={tab.id}

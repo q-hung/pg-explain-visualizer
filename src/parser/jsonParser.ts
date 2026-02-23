@@ -88,13 +88,16 @@ const parsePlanNode = (raw: Record<string, unknown>): PlanNode => {
 };
 
 const parseJit = (raw: Record<string, unknown>): JitStats | undefined => {
-  if (!raw) {return undefined;}
+  if (!raw) {
+    return undefined;
+  }
 
   return {
     functions: (raw["Functions"] as number) || 0,
     options: {
       inlining: (raw["Options"] as Record<string, boolean>)?.["Inlining"] ?? false,
-      optimization: (raw["Options"] as Record<string, boolean>)?.["Optimization"] ?? false,
+      optimization:
+        (raw["Options"] as Record<string, boolean>)?.["Optimization"] ?? false,
       expressions: (raw["Options"] as Record<string, boolean>)?.["Expressions"] ?? false,
       deforming: (raw["Options"] as Record<string, boolean>)?.["Deforming"] ?? false,
     },
