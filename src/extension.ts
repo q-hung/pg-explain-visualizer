@@ -3,6 +3,7 @@ import { parseExplain } from "./parser/index";
 import { PlanData } from "./types";
 
 let currentPanel: vscode.WebviewPanel | undefined;
+let latestPlanData: PlanData | undefined;
 
 export const activate = (context: vscode.ExtensionContext) => {
   // Command: Visualize selected text
@@ -59,6 +60,8 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
     return;
   }
 
+  latestPlanData = planData;
+
   if (currentPanel) {
     currentPanel.reveal(vscode.ViewColumn.Beside);
   } else {
@@ -76,6 +79,15 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
     currentPanel.onDidDispose(() => {
       currentPanel = undefined;
     });
+
+    currentPanel.webview.onDidReceiveMessage((message) => {
+      if (message.type === "ready" && latestPlanData) {
+        currentPanel?.webview.postMessage({
+          type: "setPlanData",
+          data: latestPlanData,
+        });
+      }
+    });
   }
 
   currentPanel.webview.html = getWebviewContent(
@@ -83,24 +95,12 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
     context.extensionUri
   );
 
-  // Send data to webview once it's ready
-  // Small delay to ensure the webview script is loaded
   setTimeout(() => {
     currentPanel?.webview.postMessage({
       type: "setPlanData",
       data: planData,
     });
   }, 300);
-
-  // Also handle messages from webview requesting data
-  currentPanel.webview.onDidReceiveMessage((message) => {
-    if (message.type === "ready") {
-      currentPanel?.webview.postMessage({
-        type: "setPlanData",
-        data: planData,
-      });
-    }
-  });
 };
 
 const getWebviewContent = (webview: vscode.Webview, extensionUri: vscode.Uri): string => {
