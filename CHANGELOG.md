@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.2.1] - 2025-02-23
+
+### Fixed
+
+- **Webview reset** — Visualizing a different EXPLAIN now correctly replaces the plan; the webview no longer shows the previous plan or a mix of old and new (single handler per panel, cache-busted script, plan + version in messages, App keyed by version).
+
+### Added
+
+- Parser independence tests to guard the above fix (`parseExplain`, `parseJsonExplain`, `parseTextExplain` return independent results across runs).
+
 ## [0.2.0] - 2025-02-24
 
 ### Added
