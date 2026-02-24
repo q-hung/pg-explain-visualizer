@@ -199,4 +199,33 @@ Execution Time: 1.0 ms`;
       expect(result.rawText).toBe(input);
     });
   });
+
+  describe("independent results (multiple parses)", () => {
+    it("second parseTextExplain with different input returns independent plan", () => {
+      const inputA = "Seq Scan on users  (cost=0.00..1.00 rows=1 width=4)";
+      const inputB =
+        "Nested Loop  (cost=0.00..1.00 rows=1 width=0)\n" +
+        "  ->  Seq Scan on orders  (cost=0.00..1.00 rows=1 width=4)";
+
+      const resultA = parseTextExplain(inputA);
+      const resultB = parseTextExplain(inputB);
+
+      expect(resultA.rawText).toBe(inputA);
+      expect(resultB.rawText).toBe(inputB);
+      expect(resultA.plan.relation).toBe("users");
+      expect(resultB.plan.nodeType).toBe("Nested Loop");
+      expect(resultB.plan.children[0].relation).toBe("orders");
+      expect(resultA.plan).not.toBe(resultB.plan);
+    });
+
+    it("first result unchanged after parsing different text", () => {
+      const inputA = "Seq Scan on table_a  (cost=0.00..1.00 rows=1 width=4)";
+      const inputB = "Seq Scan on table_b  (cost=0.00..1.00 rows=1 width=4)";
+
+      const resultA = parseTextExplain(inputA);
+      parseTextExplain(inputB);
+
+      expect(resultA.plan.relation).toBe("table_a");
+    });
+  });
 });

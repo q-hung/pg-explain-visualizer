@@ -358,4 +358,45 @@ describe("parseJsonExplain", () => {
       expect(result.maxTotalTime).toBe(0);
     });
   });
+
+  describe("independent results (multiple parses)", () => {
+    it("second parseJsonExplain with different input returns independent plan", () => {
+      const inputA = JSON.stringify([
+        { Plan: { ...minimalPlan, "Node Type": "Seq Scan", "Relation Name": "users" } },
+      ]);
+      const inputB = JSON.stringify([
+        {
+          Plan: {
+            ...minimalPlan,
+            "Node Type": "Nested Loop",
+            Plans: [
+              { ...minimalPlan, "Node Type": "Seq Scan", "Relation Name": "orders" },
+            ],
+          },
+        },
+      ]);
+
+      const resultA = parseJsonExplain(inputA);
+      const resultB = parseJsonExplain(inputB);
+
+      expect(resultA.rawText).toBe(inputA);
+      expect(resultB.rawText).toBe(inputB);
+      expect(resultA.plan.nodeType).toBe("Seq Scan");
+      expect(resultA.plan.relation).toBe("users");
+      expect(resultB.plan.nodeType).toBe("Nested Loop");
+      expect(resultB.plan.children).toHaveLength(1);
+      expect(resultB.plan.children[0].relation).toBe("orders");
+      expect(resultA.plan).not.toBe(resultB.plan);
+    });
+
+    it("first result unchanged after parsing different JSON", () => {
+      const inputA = JSON.stringify([{ Plan: { ...minimalPlan, "Relation Name": "table_a" } }]);
+      const inputB = JSON.stringify([{ Plan: { ...minimalPlan, "Relation Name": "table_b" } }]);
+
+      const resultA = parseJsonExplain(inputA);
+      parseJsonExplain(inputB);
+
+      expect(resultA.plan.relation).toBe("table_a");
+    });
+  });
 });

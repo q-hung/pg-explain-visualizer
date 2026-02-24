@@ -97,4 +97,37 @@ describe("parseExplain", () => {
       expect(result.plan.rowEstimateFactor).toBe(-2);
     });
   });
+
+  describe("independent results (visualize different EXPLAIN)", () => {
+    it("second parseExplain with different input returns independent plan data", () => {
+      const inputA = "Seq Scan on users  (cost=0.00..10.00 rows=100 width=4)";
+      const inputB =
+        "Nested Loop  (cost=0.00..1.00 rows=1 width=0)\n" +
+        "  ->  Index Scan on orders  (cost=0.00..1.00 rows=1 width=4)";
+
+      const resultA = parseExplain(inputA);
+      const resultB = parseExplain(inputB);
+
+      expect(resultA.rawText).toBe(inputA);
+      expect(resultB.rawText).toBe(inputB);
+      expect(resultA.plan.nodeType).toBe("Seq Scan");
+      expect(resultA.plan.relation).toBe("users");
+      expect(resultB.plan.nodeType).toBe("Nested Loop");
+      expect(resultB.plan.children).toHaveLength(1);
+      expect(resultB.plan.children[0].relation).toBe("orders");
+      expect(resultA.plan).not.toBe(resultB.plan);
+    });
+
+    it("parseExplain does not mutate previous result when parsing again", () => {
+      const inputA = "Seq Scan on a  (cost=0.00..1.00 rows=1 width=4)";
+      const inputB = "Seq Scan on b  (cost=0.00..1.00 rows=1 width=4)";
+
+      const resultA = parseExplain(inputA);
+      const resultB = parseExplain(inputB);
+
+      expect(resultA.plan.relation).toBe("a");
+      expect(resultB.plan.relation).toBe("b");
+      expect(resultA.plan.relation).toBe("a");
+    });
+  });
 });

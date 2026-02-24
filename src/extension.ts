@@ -64,6 +64,18 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
 
   if (currentPanel) {
     currentPanel.reveal(vscode.ViewColumn.Beside);
+    // Force webview to reload so it shows the new plan (cache-bust script URL)
+    currentPanel.webview.html = getWebviewContent(
+      currentPanel.webview,
+      context.extensionUri,
+      Date.now().toString()
+    );
+    currentPanel.webview.postMessage({
+      type: "setPlanData",
+      data: planData,
+      version: Date.now(),
+    });
+    return;
   } else {
     currentPanel = vscode.window.createWebviewPanel(
       "pgExplainVisualizer",
@@ -85,6 +97,7 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
         currentPanel?.webview.postMessage({
           type: "setPlanData",
           data: latestPlanData,
+          version: Date.now(),
         });
       }
     });
@@ -99,14 +112,22 @@ const visualize = (context: vscode.ExtensionContext, rawText: string): void => {
     currentPanel?.webview.postMessage({
       type: "setPlanData",
       data: planData,
+      version: Date.now(),
     });
   }, 300);
 };
 
-const getWebviewContent = (webview: vscode.Webview, extensionUri: vscode.Uri): string => {
-  const scriptUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "dist", "webview.js")
-  );
+const getWebviewContent = (
+  webview: vscode.Webview,
+  extensionUri: vscode.Uri,
+  _cacheBust?: string
+): string => {
+  const scriptPath = vscode.Uri.joinPath(extensionUri, "dist", "webview.js");
+  const scriptUri = webview.asWebviewUri(scriptPath);
+  const scriptSrc = _cacheBust
+    ? `${scriptUri.toString()}?v=${_cacheBust}`
+    : scriptUri.toString();
+
   const styleUri = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "dist", "webview.css")
   );
@@ -138,7 +159,7 @@ const getWebviewContent = (webview: vscode.Webview, extensionUri: vscode.Uri): s
 </head>
 <body>
   <div id="root"></div>
-  <script nonce="${nonce}" src="${scriptUri}"></script>
+  <script nonce="${nonce}" src="${scriptSrc}"></script>
 </body>
 </html>`;
 };
